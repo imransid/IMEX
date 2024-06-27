@@ -19,3 +19,6 @@
 
 
 > npx prisma migrate dev --name add_email_verified_default
+
+
+> nest generate module auth --no-spec  
