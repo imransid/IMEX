@@ -8,12 +8,57 @@ datasource db {
 }
 
 model Users {
-  id                    Int      @id @default(autoincrement())
+  id                    Int        @id @default(autoincrement())
   name                  String
-  email                 String   @unique
-  email_verified_status Boolean  @default(false)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  email                 String     @unique
+  email_verified_status Boolean    @default(false)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
   password              String
-  date_of_birth         DateTime @default(now())
+  date_of_birth         DateTime   @default(now())
+  Schedule              Schedule[]
+}
+
+model Medicine {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  Schedule    Schedule[]
+}
+
+model Schedule {
+  id                 Int                @id @default(autoincrement())
+  medicine           Medicine           @relation(fields: [id], references: [id])
+  Users              Users              @relation(fields: [usersId], references: [id])
+  usersId            Int
+  dose_will_take     String
+  time               DateTime
+  dose               Int
+  additional_setting AdditionalSetting? @relation()
+  additionalId       Int?               @unique
+}
+
+model AdditionalSetting {
+  id                                  Int          @id @default(autoincrement())
+  instruction                         String?
+  treatment_duration_start_time       String?
+  treatment_duration_end_time         String?
+  medicine_reminder_total_required    Int?
+  medicine_reminder_current_stock     Int?
+  medicine_reminder_remiond_when_left Int?
+  precription                         String?
+  appointment                         Appointment? @relation(references: [id], fields: [appointmentId])
+  appointmentId                       Int?         @unique
+  Schedule                            Schedule     @relation(fields: [scheduleId], references: [id])
+  scheduleId                          Int          @unique
+}
+
+model Appointment {
+  id                Int                @id @default(autoincrement())
+  date              DateTime
+  time              String
+  doctor_name       String
+  location          String
+  set_reminder      Boolean
+  AdditionalSetting AdditionalSetting? @relation()
 }

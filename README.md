@@ -17,7 +17,7 @@
 
 # Create Resource
 
-> nest g resource users
+> nest g resource alarms
 
 # Update Your Schema File
 
@@ -26,3 +26,14 @@
 > nest generate module auth --no-spec
 
 > pm2 start /home/sait22sait16/IMEX/dist/src/main.js --name "team-pharmacy"
+
+# For docker to connect DB
+
+- docker exec -it imex-postgres-1-1 psql -U myuser
+
+- CREATE DATABASE teamPharmacy;
+
+# Restart the Container
+
+> docker compose down
+> docker compose up --remove-orphans
